@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patel Food - Booking</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>🍔 PATEL FOOD</h1>
+  <p>Delicious Food Delivered</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="menu.html">Menu</a>
+  <a href="booking.html" class="active">Booking</a>
+  <a href="login.html">Login</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="container">
+  <h2 class="section-title">Food Booking</h2>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-step active">
+      <div class="step-number">1</div>
+      <div class="step-title">Customer Info</div>
+    </div>
+    <div class="progress-step">
+      <div class="step-number">2</div>
+      <div class="step-title">Select Food</div>
+    </div>
+    <div class="progress-step">
+      <div class="step-number">3</div>
+      <div class="step-title">Confirm Order</div>
+    </div>
+  </div>
+
+  <!-- Booking Form Container -->
+  <div class="booking-container">
+    <form id="bookingForm">
+      
+      <!-- Step 1: Customer Information -->
+      <div class="booking-step" id="step1">
+        <div class="form-box">
+          <h3 style="color: #ff5733; margin-bottom: 20px; text-align: center;">👤 Customer Information</h3>
+          
+          <label for="customerName">Full Name</label>
+          <input type="text" id="customerName" placeholder="Enter your full name" required>
+          
+          <label for="customerEmail">Email</label>
+          <input type="email" id="customerEmail" placeholder="your@email.com" required>
+          
+          <label for="customerPhone">Phone</label>
+          <input type="tel" id="customerPhone" placeholder="+91 1234567890" required>
+          
+          <div class="step-buttons">
+            <button type="button" class="btn next-btn" onclick="nextStep()">Next Step →</button>
+          </div>
+          <p class="msg" id="bookMsg"></p>
+        </div>
+      </div>
+
+      <!-- Step 2: Food Selection -->
+      <div class="booking-step" id="step2" style="display: none;">
+        <div class="food-selection-container">
+          <h3 style="color: #ff5733; margin-bottom: 30px; text-align: center;">🍽️ Select Your Food</h3>
+          
+          <div class="food-grid">
+            <div class="food-card" onclick="selectFood('Classic Pizza', 199, 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092" alt="Pizza">
+                <div class="food-overlay">
+                  <div class="price-tag">₹199</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Classic Pizza</h4>
+                <p>Cheesy & tasty with fresh toppings</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Grilled Burger', 149, 'https://images.unsplash.com/photo-1550547660-d9450f859349')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349" alt="Burger">
+                <div class="food-overlay">
+                  <div class="price-tag">₹149</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Grilled Burger</h4>
+                <p>Juicy grilled beef patty with veggies</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Fresh Salad', 99, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salad">
+                <div class="food-overlay">
+                  <div class="price-tag">₹99</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Fresh Salad</h4>
+                <p>Healthy & fresh garden vegetables</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Creamy Pasta', 179, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd" alt="Pasta">
+                <div class="food-overlay">
+                  <div class="price-tag">₹179</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Creamy Pasta</h4>
+                <p>Creamy & delicious Italian style</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Club Sandwich', 129, 'https://images.unsplash.com/photo-1571091718767-18b5b1450add')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1571091718767-18b5b1450add" alt="Sandwich">
+                <div class="food-overlay">
+                  <div class="price-tag">₹129</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Club Sandwich</h4>
+                <p>Triple layer with fresh ingredients</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Veg Rolls', 89, 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" alt="Rolls">
+                <div class="food-overlay">
+                  <div class="price-tag">₹89</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Veg Rolls</h4>
+                <p>Crispy rolls with spicy filling</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Sushi Platter', 299, 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1" alt="Sushi">
+                <div class="food-overlay">
+                  <div class="price-tag">₹299</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Sushi Platter</h4>
+                <p>Fresh Japanese sushi variety</p>
+              </div>
+            </div>
+
+            <div class="food-card" onclick="selectFood('Dessert Special', 79, 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002')">
+              <div class="food-image">
+                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002" alt="Dessert">
+                <div class="food-overlay">
+                  <div class="price-tag">₹79</div>
+                </div>
+              </div>
+              <div class="food-info">
+                <h4>Dessert Special</h4>
+                <p>Sweet ice cream with toppings</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-buttons">
+            <button type="button" class="btn btn-outline" onclick="prevStep()">← Back</button>
+            <button type="button" class="btn next-btn" onclick="nextStep()" disabled>Next Step →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Order Confirmation -->
+      <div class="booking-step" id="step3" style="display: none;">
+        <div class="form-box">
+          <h3 style="color: #ff5733; margin-bottom: 20px; text-align: center;">📦 Order Details</h3>
+          
+          <div class="selected-food-display" id="selectedFoodDisplay">
+            <!-- Selected food will be displayed here -->
+          </div>
+          
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" min="1" value="1" required>
+          
+          <label for="deliveryAddress">Delivery Address</label>
+          <textarea id="deliveryAddress" placeholder="Enter your complete delivery address" required></textarea>
+          
+          <div class="step-buttons">
+            <button type="button" class="btn btn-outline" onclick="prevStep()">← Back</button>
+            <button type="button" class="btn" onclick="placeOrder()">Place Order 🚀</button>
+          </div>
+          <p class="msg" id="bookMsg"></p>
+        </div>
+      </div>
+
+      <!-- Step 4: Order Confirmation -->
+      <div class="booking-step" id="step4" style="display: none;">
+        <div class="form-box">
+          <div id="orderConfirmation">
+            <div id="orderDetails"></div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>Email: foodie@email.com | Phone: +91 9512206922</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

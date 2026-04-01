@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patel Food - Home</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── BACKGROUND SLIDER ── */
+    #bg-slider {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-color: #0d0d0d;
+      overflow: hidden;
+    }
+
+    .bg-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 2s ease-in-out, transform 6s ease-in-out;
+      transform: scale(1.05);
+      /* slightly zoomed in */
+    }
+
+    .bg-slide.active {
+      opacity: 0.4;
+      /* dim it down so content is readable */
+      transform: scale(1);
+      /* slowly zoom out */
+      z-index: -1;
+    }
+
+    /* Base overlay block for better text readability */
+    #bg-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(13, 13, 13, 0.8) 0%, rgba(13, 13, 13, 0.95) 100%);
+      pointer-events: none;
+    }
+
+    /* ── NAV (Similar to Menu) ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      background: rgba(13, 13, 13, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 87, 51, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 64px;
+    }
+
+    .nav-brand {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #ff5733;
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      color: #aaa;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(255, 87, 51, 0.15);
+      color: #ff5733;
+    }
+
+    /* ── CONTENT CONTAINER ── */
+    .container {
+      max-width: 1050px;
+      margin: 60px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .welcome-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      backdrop-filter: blur(16px);
+      max-width: 650px;
+      margin: 0 auto 60px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .welcome-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(255, 87, 51, 0.15);
+      border-color: rgba(255, 87, 51, 0.3);
+    }
+
+    .welcome-box h2 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    .welcome-box h2 span {
+      color: #ff5733;
+    }
+
+    .welcome-box p {
+      color: #ccc;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .home-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff5733, #e04a28);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+
+    /* ── FEATURES GRID ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 87, 51, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      display: inline-block;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      color: #ff5733;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      color: #aaa;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .feature-stats {
+      display: inline-block;
+      background: rgba(255, 87, 51, 0.15);
+      color: #ff5733;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 87, 51, 0.3);
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-box {
+      background: linear-gradient(135deg, rgba(255, 87, 51, 0.15) 0%, rgba(204, 58, 30, 0.1) 100%);
+      border: 1px solid rgba(255, 87, 51, 0.25);
+      border-radius: 20px;
+      padding: 50px 30px;
+      text-align: center;
+      backdrop-filter: blur(16px);
+    }
+
+    .cta-box h3 {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 15px;
+    }
+
+    .cta-box p {
+      color: #ccc;
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        padding: 0 14px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- BACKGROUND SLIDER -->
+  <div id="bg-slider">
+    <div class="bg-slide active" style="background-image: url('backgrounds/image.png')"></div>
+    <div class="bg-slide" style="background-image: url('backgrounds/image copy.png')"></div>
+    <div class="bg-slide" style="background-image: url('backgrounds/image copy 2.png')"></div>
+    <div class="bg-slide" style="background-image: url('backgrounds/image copy 3.png')"></div>
+    <div class="bg-slide" style="background-image: url('backgrounds/image copy 4.png')"></div>
+    <div class="bg-slide" style="background-image: url('backgrounds/image copy 5.png')"></div>
+  </div>
+  <div id="bg-overlay"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-brand">🍔 PATEL FOOD</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="booking.html">Booking</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="welcome-box">
+      <h2>Welcome to <span>Patel Food</span></h2>
+      <p>We serve fresh, tasty food right to your door. Log in or view our menu to start your order instantly!</p>
+      <div class="home-btns">
+        <a href="login.html" class="btn"
+          style="background: rgba(255,255,255,0.1); color:#fff; border: 1px solid rgba(255,255,255,0.2);">Log In</a>
+      </div>
+    </div>
+
+    <div class="features-section">
+      <h2 class="section-title">Why Choose Patel Food?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🍔</div>
+          <h3>Quality Food</h3>
+          <p>Fresh ingredients sourced daily from top local markets.</p>
+          <div class="feature-stats">4.8/5 Rating</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🚚</div>
+          <h3>Lightning Fast</h3>
+          <p>30-minute guaranteed delivery or your meal is free.</p>
+          <div class="feature-stats">15k+ Orders</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Best Prices</h3>
+          <p>Affordable meals with exciting daily special offers.</p>
+          <div class="feature-stats">20% Off Today</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌟</div>
+          <h3>Customer Love</h3>
+          <p>Trusted by thousands of happy & hungry customers.</p>
+          <div class="feature-stats">98% Satisfaction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-box">
+        <h3>Ready to Order?</h3>
+        <p>Join thousands of satisfied customers enjoying our mouth-watering recipes.</p>
+        <a href="menu.html" class="btn">Start Ordering Now</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Patel Food · Email: foodie@email.com · Phone: +91 9512206922</p>
+  </footer>
+
+  <script>
+    // ── BACKGROUND SLIDER LOGIC ──
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides = document.querySelectorAll('.bg-slide');
+      if (slides.length === 0) return;
+
+      let currentIndex = 0;
+
+      setInterval(() => {
+        // Remove class from current slide
+        slides[currentIndex].classList.remove('active');
+
+        // Move to next slide
+        currentIndex = (currentIndex + 1) % slides.length;
+
+        // Add class to new slide
+        slides[currentIndex].classList.add('active');
+      }, 5000); // 5 seconds per slide
+    });
+  </script>
+
+</body>
+
+</html>
